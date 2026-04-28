@@ -6,8 +6,8 @@ Use these templates when you have a **single static audit-log CSV** — either o
 
 | File | When to use |
 |---|---|
-| `AI-Business-Value-Dashboard-csv-only.pbit` | Your CSV lives on a local drive (or anywhere accessible via `File.Contents`). Refreshes locally in Power BI Desktop. For Service refresh you'd need an on-premises data gateway. |
-| `AI-Business-Value-Dashboard-sharepoint-only.pbit` | Your CSV lives at a single SharePoint URL. Refreshes in both Desktop and Service without a gateway (Service uses your stored SharePoint credentials). |
+| `AI Business Value Dashboard - csv only.pbit` | Your CSV lives on a local drive (or anywhere accessible via `File.Contents`). Refreshes locally in Power BI Desktop. For Service refresh you'd need an on-premises data gateway. |
+| `AI Business Value Dashboard - sharepoint only.pbit` | Your CSV lives at a single SharePoint URL. Refreshes in both Desktop and Service without a gateway (Service uses your stored SharePoint credentials). |
 
 ## When to use this path
 
@@ -22,7 +22,7 @@ Use these templates when you have a **single static audit-log CSV** — either o
 ### `csv-only` variant
 
 1. Generate the audit-log CSV (use [`scripts/get-copilot-interactions.ps1`](../scripts/get-copilot-interactions.ps1) or your own export)
-2. Open `AI-Business-Value-Dashboard-csv-only.pbit` in Power BI Desktop
+2. Open `AI Business Value Dashboard - csv only.pbit` in Power BI Desktop
 3. Supply the parameters when prompted:
 
    | Parameter | Value |
@@ -37,7 +37,7 @@ Use these templates when you have a **single static audit-log CSV** — either o
 ### `sharepoint-only` variant
 
 1. Upload your CSV to a SharePoint document library and copy its URL
-2. Open `AI-Business-Value-Dashboard-sharepoint-only.pbit` in Power BI Desktop
+2. Open `AI Business Value Dashboard - sharepoint only.pbit` in Power BI Desktop
 3. Supply the parameters:
 
    | Parameter | Value |
