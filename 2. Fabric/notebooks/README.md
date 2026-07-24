@@ -7,11 +7,13 @@ cleanly even before you've run the optional ingesters.
 
 Tiers below match what the base (*No Studio*) dashboard actually needs:
 
-- **Required** — the dashboard's backbone. Run these four.
+- **Required** — the dashboard's backbone. Run the four ingesters, then the curate step.
 - **Recommended** — Agent 365 governance. Run the registry ingester if you can.
 - **Optional** — Cowork / Work IQ credit consumption (Microsoft Admin Center export).
 
-## Required — run these four
+## Required — run these
+
+**Step 1 — ingesters.** Each pulls from Graph and writes one Delta table:
 
 | Notebook | Output table | Feeds |
 |---|---|---|
@@ -19,6 +21,18 @@ Tiers below match what the base (*No Studio*) dashboard actually needs:
 | `Copilot_Licensed_Users_Direct_Ingester` | `copilot_licensed_users` | Licence readiness |
 | `Copilot_Org_Data_Direct_Ingester` | `copilot_org_data` | Org / department dimension |
 | `Copilot_ProductFeedback_Ingester` | `user_feedback` | User Feedback page |
+
+**Step 2 — curate the fact table.** Run this **after** the ingesters, immediately before the model refresh:
+
+| Notebook | Reads | Output table |
+|---|---|---|
+| `Copilot_Interactions_Curate` | `copilot_interactions_parsed` (+ `copilot_licensed_users`, `agents_365`) | `copilot_interactions_curated` |
+
+> **This is a transform, not an ingester** — it doesn't call Graph and doesn't replace the audit-log
+> ingester. It does the JSON parse / explode / date / licence / agent-map work that the Power BI
+> template used to do in Power Query on every refresh, and writes a flat, V-Ordered
+> `copilot_interactions_curated` table that the model reads with no transformation. Use
+> `WRITE_MODE = "overwrite"` for the first backfill, then `"merge"` for daily runs.
 
 ## Recommended — Agent 365 governance
 
