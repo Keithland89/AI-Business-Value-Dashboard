@@ -1,8 +1,7 @@
 # Fabric / Lakehouse deployment (recommended)
 
-The recommended path. Notebooks pull your Copilot data from Microsoft Graph and write Delta tables
-straight into a Lakehouse. The Power BI template is a thin client over the Lakehouse SQL endpoint, so
-all the heavy JSON parsing happens in Spark and the dataset stays small and fast.
+Notebooks pull your Copilot data from Microsoft Graph and write Delta tables
+straight into a Lakehouse. 
 
 ![Fabric architecture](./ValueLens_Fabric_Architecture.png)
 
@@ -19,7 +18,7 @@ all the heavy JSON parsing happens in Spark and the dataset stays small and fast
 | `pipelines/`, `flows/`, `docs/` | Optional: a Fabric pipeline to run the core notebooks on a schedule, Power Automate flows for export-only sources, and reference docs. |
 | `archive/` | The previous (pre-2307) Power-Query template, kept for reference only. Not needed for a new deployment. |
 
-> **The base template is *No Studio*.** Copilot Studio agent-transcript analytics and the M365
+> Copilot Studio agent-transcript analytics and the M365
 > work-behaviour comparison are **separate optional add-ons** — see
 > [Optional sources](#optional-sources). Everything in this Quick start is the core, Studio-free path.
 
@@ -33,7 +32,7 @@ all the heavy JSON parsing happens in Spark and the dataset stays small and fast
 | **◆ Activation** | Activation across teams — licensed vs unlicensed, active vs inactive |
 | **🎯 Readiness** | Ranks unlicensed / low-adoption users by upgrade‑priority score |
 | **📡 Adoption** | User counts, coverage %, licensed vs unlicensed reach |
-| **🪙 Consumption** | Copilot &amp; agent consumption — credits / messages over time |
+| **🪙 Credit Meter** | Copilot &amp; agent consumption — credits / messages over time |
 | **🔮 Activity** | Copilot and agent usage, tasks and behaviour mix |
 | **🚀 Value** | Hours saved, dollar‑equivalent assisted value, and the business case |
 | **🌱 Maturity** | Progression: Asking → Finding → Consuming → Producing → Delegating |
