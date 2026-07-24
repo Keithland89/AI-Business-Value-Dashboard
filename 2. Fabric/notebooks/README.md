@@ -7,7 +7,7 @@ cleanly even before you've run the optional ingesters.
 
 Tiers below match what the base (*No Studio*) dashboard actually needs:
 
-- **Required** — the dashboard's backbone. Run the four ingesters, then the curate step.
+- **Required** — the dashboard's backbone. Run the four ingesters, then the audit-log processor.
 - **Recommended** — Agent 365 governance. Run the registry ingester if you can.
 - **Optional** — Cowork / Work IQ credit consumption (Microsoft Admin Center export).
 
@@ -22,11 +22,11 @@ Tiers below match what the base (*No Studio*) dashboard actually needs:
 | `Copilot_Org_Data_Direct_Ingester` | `copilot_org_data` | Org / department dimension |
 | `Copilot_ProductFeedback_Ingester` | `user_feedback` | User Feedback page |
 
-**Step 2 — curate the fact table.** Run this **after** the ingesters, immediately before the model refresh:
+**Step 2 — process the audit-log fact table.** Run **`Copilot_Audit_Log_Processor`** **after** the Step 1 ingesters, immediately before the model refresh:
 
 | Notebook | Reads | Output table |
 |---|---|---|
-| `Copilot_Interactions_Curate` | `copilot_interactions_parsed` (+ `copilot_licensed_users`, `agents_365`) | `copilot_interactions_curated` |
+| `Copilot_Audit_Log_Processor` | `copilot_interactions_parsed` (+ `copilot_licensed_users`, `agents_365`) | `copilot_interactions_curated` |
 
 > **This is a transform, not an ingester** — it doesn't call Graph and doesn't replace the audit-log
 > ingester. It does the JSON parse / explode / date / licence / agent-map work that the Power BI
@@ -36,8 +36,16 @@ Tiers below match what the base (*No Studio*) dashboard actually needs:
 
 ## Recommended — Agent 365 governance
 
-Pick **one** of these two — they both feed the **Agents 365** page. Prefer the registry
-ingester; fall back to the lander only if you can't get app-only permissions.
+Both notebooks feed the **Agents 365** page and write the **same** `dbo.agents_365` table, so
+**pick exactly ONE — never run both.** Decision rule:
+
+- **`Copilot_Agent365_Registry_Ingester` — the default.** Use it whenever the tenant has an
+  **Agent 365 licence** and you can grant the app-only Graph permissions. It pulls the registry live
+  and runs unattended on a schedule — no upload step.
+- **`Copilot_Agent365_Lander` — manual fallback only.** Use it *only* when you can't grant those
+  permissions (or for a one-off / evaluation), by hand-dropping the admin-center CSV export at
+  `Files/agent365/agents.csv`. **The Ingester replaces this Lander** the moment the API / licence
+  becomes available on the tenant.
 
 | Notebook | Output table | When to use |
 |---|---|---|

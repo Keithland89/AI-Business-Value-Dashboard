@@ -15,7 +15,7 @@ all the heavy JSON parsing happens in Spark and the dataset stays small and fast
 | Item | Purpose |
 |---|---|
 | `ValueLens - Fabric.pbit` | The Power BI template. A pure passthrough over the Lakehouse SQL endpoint — no transformations, so it refreshes fast (and can run **Direct Lake**). |
-| `notebooks/` | The base (*No Studio*) ingester notebooks — audit logs, licensed users, org data — **plus `Copilot_Interactions_Curate`**, which does the heavy audit-log shaping once in Spark. Optional: feedback, Agents 365, Cowork / Work IQ. See [`notebooks/README.md`](notebooks/README.md). |
+| `notebooks/` | The base (*No Studio*) ingester notebooks — audit logs, licensed users, org data — **plus `Copilot_Audit_Log_Processor`**, which does the heavy audit-log shaping once in Spark. Optional: feedback, Agents 365, Cowork / Work IQ. See [`notebooks/README.md`](notebooks/README.md). |
 | `pipelines/`, `flows/`, `docs/` | Optional: a Fabric pipeline to run the core notebooks on a schedule, Power Automate flows for export-only sources, and reference docs. |
 | `archive/` | The previous (pre-2307) Power-Query template, kept for reference only. Not needed for a new deployment. |
 
@@ -104,12 +104,12 @@ Use each notebook's **Schedule** button, or wire all three into a single Fabric 
 <summary><b>4. Run the curate notebook</b> (shapes the audit-log fact table)</summary>
 
 One extra notebook does the heavy audit-log shaping **once in Spark**, so Power BI never has to.
-Import `notebooks/Copilot_Interactions_Curate.ipynb`, attach it to the same Lakehouse, and run it
+Import `notebooks/Copilot_Audit_Log_Processor.ipynb`, attach it to the same Lakehouse, and run it
 **after** the audit-log ingester (and after the licensed-users / Agents 365 producers, which it joins).
 
 | Notebook | Reads | Writes |
 |---|---|---|
-| `Copilot_Interactions_Curate.ipynb` | `copilot_interactions_parsed` (+ `copilot_licensed_users`, `agents_365`) | `dbo.copilot_interactions_curated` |
+| `Copilot_Audit_Log_Processor.ipynb` | `copilot_interactions_parsed` (+ `copilot_licensed_users`, `agents_365`) | `dbo.copilot_interactions_curated` |
 
 It parses the `AccessedResources` / `AISystemPlugin` JSON, explodes accessed resources, derives the
 date columns, normalises the UPN, joins the licence flag and resolves the agent map — the **same
@@ -290,7 +290,7 @@ CSVs upstream? The [`../1. SharePoint/`](../1.%20SharePoint/) path consumes them
 | `Login failed` / `cannot open database` (Power BI) | The SQL endpoint host or database name is wrong - recheck the Lakehouse settings page. |
 | `the key didn't match any rows` | A notebook ran against the wrong Lakehouse - pin your Lakehouse as default and re-run. |
 | All users show "Unlicensed" | The licensed-users notebook hasn't run yet, or its report period is too narrow (`REPORT_PERIOD = 'D30'`). |
-| Refresh slow (minutes to hours) | Almost always the audit-log transforms running inside Power Query. Make sure you've run **`Copilot_Interactions_Curate`** and that the fact table points at `copilot_interactions_curated` (the shaping is meant to happen upstream in Spark, not on refresh). The template also ships with **incremental refresh** pre-configured (first load is full, then only recent days) — needs a Premium/PPU/Fabric capacity; see [`docs/INCREMENTAL-REFRESH.md`](docs/INCREMENTAL-REFRESH.md). Fastest option on Fabric: convert to **Direct Lake**. |
+| Refresh slow (minutes to hours) | Almost always the audit-log transforms running inside Power Query. Make sure you've run **`Copilot_Audit_Log_Processor`** and that the fact table points at `copilot_interactions_curated` (the shaping is meant to happen upstream in Spark, not on refresh). The template also ships with **incremental refresh** pre-configured (first load is full, then only recent days) — needs a Premium/PPU/Fabric capacity; see [`docs/INCREMENTAL-REFRESH.md`](docs/INCREMENTAL-REFRESH.md). Fastest option on Fabric: convert to **Direct Lake**. |
 
 </details>
 
