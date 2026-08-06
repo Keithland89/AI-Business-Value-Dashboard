@@ -10,7 +10,6 @@ duplicate those notebooks into:
 
   3. Fabric Extended/_shared/notebooks/                       (documentation copy)
   3. Fabric Extended/Fabric + Copilot Studio/notebooks/_core/ (runnable copy)
-  3. Fabric Extended/Fabric + M365/notebooks/_core/           (runnable copy)
 
 Run this after editing any file in `2. Fabric/notebooks/`.
 
@@ -32,8 +31,7 @@ $source   = Join-Path $repoRoot '2. Fabric\notebooks'
 
 $destinations = @(
     (Join-Path $repoRoot '3. Fabric Extended\_shared\notebooks'),
-    (Join-Path $repoRoot '3. Fabric Extended\Fabric + Copilot Studio\notebooks\_core'),
-    (Join-Path $repoRoot '3. Fabric Extended\Fabric + M365\notebooks\_core')
+    (Join-Path $repoRoot '3. Fabric Extended\Fabric + Copilot Studio\notebooks\_core')
 )
 
 $notebooks = Get-ChildItem $source -Filter '*.ipynb' -File

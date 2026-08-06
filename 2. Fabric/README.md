@@ -18,8 +18,7 @@ straight into a Lakehouse.
 | `pipelines/`, `flows/`, `docs/` | Optional: a Fabric pipeline to run the core notebooks on a schedule, Power Automate flows for export-only sources, and reference docs. |
 | `archive/` | The previous (pre-2307) Power-Query template, kept for reference only. Not needed for a new deployment. |
 
-> Copilot Studio agent-transcript analytics and the M365
-> work-behaviour comparison are **separate optional add-ons** — see
+> Copilot Studio agent-transcript analytics is a **separate optional add-on** — see
 > [Optional sources](#optional-sources). Everything in this Quick start is the core, Studio-free path.
 
 ## 📚 Dashboard pages
@@ -183,13 +182,6 @@ template and notebooks. To enable them:
 3. Run `3. Fabric Extended/Fabric + Copilot Studio/notebooks/Copilot_Agent_Transcript_Parser.ipynb`.
 
 Full setup lives in the [Fabric + Copilot Studio README](../3.%20Fabric%20Extended/Fabric%20+%20Copilot%20Studio/README.md).
-</details>
-
-<details>
-<summary><b>M365 work-behaviour comparison</b> — preview add-on (click to expand)</summary>
-
-The optional *AI vs Manual Work* comparison ships with the preview **[Fabric + M365](../3.%20Fabric%20Extended/Fabric%20+%20M365/README.md)**
-build (`notebooks/Copilot_M365_Work_Behavior_Ingester.ipynb`). It's a preview and not required for the core dashboard.
 </details>
 
 <details>
