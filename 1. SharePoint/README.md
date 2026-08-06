@@ -278,5 +278,6 @@ is **not** stored in the task. (Secretless managed-identity scheduling is WIP �
 | Masked UPNs (32-char hex) | M365 Admin → Org settings → Reports → untick "Display concealed names". |
 | `403 Forbidden` on upload | App lacks per-site write — re-run [`ProvisionSiteAccess-SP-AppReg.ps1`](./scripts/ProvisionSiteAccess-SP-AppReg.ps1). |
 | `404 Not Found` on upload | `-FolderPath` doesn't exist in SharePoint — create it, or use `/` for the library root. |
+| **Agent Health visuals blank** (`Users shared`, `Active Users`, `Total sessions`, `Exception rate`, `Last Activity Date`) | Expected on the PAX / registry path. `-IncludeAgent365Info` exports the **28-column registry catalogue**, which does not carry usage telemetry — those come from the Admin Center → **Agents** observability export. The template adds the missing columns as typed nulls so refresh still succeeds; land the Admin Center export to populate them. See [`../2. Fabric/docs/DATA-DICTIONARY.md`](../2.%20Fabric/docs/DATA-DICTIONARY.md#4-agents_365). |
 | Refresh hits 1 GB / 2-hour cap | Move to [`../2. Fabric/`](../2.%20Fabric/) for high-volume tenants. |
 </details>
