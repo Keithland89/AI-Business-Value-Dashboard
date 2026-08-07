@@ -5,7 +5,8 @@ Pick how you get the data in:
 
 | Option | Best for | What you do |
 |---|---|---|
-| **A — Manual (first run)** ⭐ | A **quick first look** to see how the numbers land, or a one-off refresh. | Export two CSVs by hand → run one [processor script](#option-a--manual-first-run) → connect the **(Local CSV)** template. No app registration, no scheduling. |
+| **0 — Sample data** 🧪 | **Seeing the dashboard immediately**, with no tenant access at all. | Open the **(Local CSV)** template and point it at the three fabricated CSVs in [`../sample-data/`](../sample-data/). No export, no scripts, no app registration. |
+| **A — Manual (first run)** ⭐ | A **quick first look** at *your* numbers, or a one-off refresh. | Export two CSVs by hand → run one [processor script](#option-a--manual-first-run) → connect the **(Local CSV)** template. No app registration, no scheduling. |
 | **B — Automated (scheduled script)** | An **ongoing**, scheduled refresh. | Run the [extract script](#option-b--automated-scheduled-script) on a schedule — it pulls the data, rolls it up, writes to SharePoint, and Power BI refreshes automatically. No manual export. |
 
 ```
